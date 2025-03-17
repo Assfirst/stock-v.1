@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}ยอดขาย{% endblock %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>
+            <i class="fas fa-chart-line me-2"></i>ยอดขาย
+        </h2>
+    </div>
+    <div class="col text-end">
+        <a href="{{ url_for("add_sale") }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>เพิ่มการขาย
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>วันที่</th>
+                        <th>สินค้า</th>
+                        <th>พนักงาน</th>
+                        <th>จำนวน</th>
+                        <th>ราคารวม</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr><td>{{ sale.sale_date.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+                        <td>{{ sale.product.name }}</td>
+                        <td>{{ sale.employee.fullname }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>{{ "%.2f"|format(sale.total_price) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end"><strong>รวมทั้งหมด:</strong></td><td><strong>{{ "%.2f"|format(sales|sum(attribute="total_price")) }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

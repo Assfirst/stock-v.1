@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}เพิ่มการขาย{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-plus me-2"></i>เพิ่มการขาย
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" id="addSaleForm"><div class="mb-3">
+                        <label class="form-label">สินค้า</label>
+                        <select name="product_id" class="form-select" required>
+                            <option value="">เลือกสินค้า</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}" data-price="{{ product.price }}" 
+                                    data-stock="{{ product.stock }}">
+                                {{ product.name }} (สต็อก: {{ product.stock }})
+                            </option>
+                            {% endfor %}</select>
+                    </div><div class="mb-3">
+                        <label class="form-label">จำนวน</label>
+                        <input type="number" name="quantity" class="form-control" min="1" required>
+                    </div>
+                    <div class="mb-3"><label class="form-label">ราคารวม</label><input type="text" id="total_price" class="form-control" readonly>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for("sales") }}" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i>ย้อนกลับ
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>บันทึก</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("addSaleForm");
+    const productSelect = form.querySelector("[name=product_id]");
+    const quantityInput = form.querySelector("[name=quantity]");
+    const totalPriceInput =document.getElementById("total_price");
+
+    function updateTotalPrice() {
+        const selectedOption = productSelect.selectedOptions[0];
+        if (selectedOption && selectedOption.value) {
+            const price = parseFloat(selectedOption.dataset.price);
+            const quantity = parseInt(quantityInput.value) || 0;
+            const total = price * quantity;
+            totalPriceInput.value = total.toFixed(2);
+        } else {
+            totalPriceInput.value = "";
+        }
+    }
+
+    productSelect.addEventListener("change", updateTotalPrice);
+    quantityInput.addEventListener("input", updateTotalPrice);
+
+    form.addEventListener("submit", function(e) {
+        const selectedOption = productSelect.selectedOptions[0];
+        if (selectedOption && selectedOption.value) {
+            const stock = parseInt(selectedOption.dataset.stock);
+            const quantity = parseInt(quantityInput.value);
+            if (quantity > stock) {
+                e.preventDefault();Swal.fire({
+                    title: "ผิดพลาด",
+                    text: "จำนวนสินค้าในสต็อกไม่เพียงพอ!",
+                    icon: "error",
+                    confirmButtonText: "ตกลง"
+                });
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

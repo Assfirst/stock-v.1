@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}ลงทะเบียน{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4class="card-title mb-0"><i class="fas fa-user-plus me-2"></i>ลงทะเบียน
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" id="registerForm">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-user me-1"></i>ชื่อผู้ใช้</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3"><label class="form-label">
+                            <i class="fas fa-lock me-1"></i>รหัสผ่าน</label><input type="password" name="password" class="form-control" required>
+                        <small class="text-muted">รหัสผ่านต้องมีอย่างน้อย 8 ตัว,ตัวพิมพ์เล็ก, ตัวพิมพ์ใหญ่ และตัวเลข</small>
+                    </div><div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-lock me-1"></i>ยืนยันรหัสผ่าน</label>
+                        <input type="password" name="confirm_password" class="form-control" required></div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-user-circle me-1"></i>ชื่อ-นามสกุล</label>
+                        <input type="text" name="fullname" class="form-control" required>
+                    </div><div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-briefcase me-1"></i>ตำแหน่ง</label><input type="text" name="position" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-envelope me-1"></i>อีเมล</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-phone me-1"></i>เบอร์โทร</label>
+                        <input type="tel" name="phone" class="form-control" pattern="[0-9]{10}" required>
+                    </div><div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-1"></i>ลงทะเบียน</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <p>มีบัญชีอยู่แล้ว? <a href="{{ url_for("login") }}">เข้าสู่ระบบ</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

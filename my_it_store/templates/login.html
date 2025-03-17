@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}เข้าสู่ระบบ{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">
+                    <i class="fas fa-sign-in-alt me-2"></i>เข้าสู่ระบบ
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" id="loginForm">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-user me-1"></i>ชื่อผู้ใช้</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3"><label class="form-label">
+                            <i class="fas fa-lock me-1"></i>รหัสผ่าน
+                        </label>
+                        <input type="password" name="password" class="form-control" required></div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-1"></i>เข้าสู่ระบบ</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <p>ยังไม่มีบัญชี? <a href="{{ url_for("register") }}">ลงทะเบียน</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}หน้าแรก{% endblock %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2class="mb-4">
+            <i class="fas fa-tachometer-alt me-2"></i>แดชบอร์ด
+        </h2>
+    </div>
+</div>
+
+<div class="dashboard-stats">
+    <div class="stat-card">
+        <i class="fas fa-box"></i>
+        <h3>{{ products|length }}</h3>
+        <p>สินค้าทั้งหมด</p>
+    </div>
+    <div class="stat-card">
+        <i class="fas fa-chart-line"></i>
+        <h3>{{ recent_sales|length }}</h3>
+        <p>ยอดขายล่าสุด</p>
+    </div>
+    <div class="stat-card">
+        <i class="fas fa-dollar-sign"></i>
+        <h3>{{ "%.2f"|format(recent_sales|sum(attribute="total_price")) }}</h3>
+        <p>รายได้รวม</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-box me-2"></i>สินค้าล่าสุด
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ชื่อสินค้า</th>
+                                <th>ราคา</th>
+                                <th>สต็อก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products[:5] %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ "%.2f"|format(product.price) }}</td>
+                                <td>{{ product.stock }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i>ยอดขายล่าสุด
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table"><thead>
+                            <tr><th>สินค้า</th>
+                                <th>จำนวน</th>
+                                <th>ราคารวม</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sale in recent_sales %}<tr>
+                                <td>{{ sale.product.name }}</td>
+                                <td>{{ sale.quantity }}</td>
+                                <td>{{ "%.2f"|format(sale.total_price) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

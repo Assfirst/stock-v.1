@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}สินค้า{% endblock %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>
+            <i class="fas fa-box me-2"></i>สินค้า
+        </h2>
+    </div>
+    <div class="col text-end">
+        <a href="{{ url_for("add_product") }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>เพิ่มสินค้า
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ชื่อสินค้า</th><th>รายละเอียด</th>
+                        <th>ราคา</th>
+                        <th>สต็อก</th><th>หมวดหมู่</th>
+                        <th>การจัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}<tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ "%.2f"|format(product.price) }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>{{ product.category }}</td><td>
+                            <a href="{{ url_for("edit_product", id=product.id) }}" 
+                               class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a><a href="{{ url_for("delete_product", id=product.id) }}" 
+                               class="btn btn-sm btn-danger delete-product"
+                               data-product-name="{{ product.name }}">
+                                <i class="fas fa-trash"></i></a>
+                        </td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll(".delete-product").forEach(button => {
+    button.addEventListener("click", function(e) {
+        e.preventDefault();
+        const productName = this.dataset.productName;
+        const deleteUrl = this.href;
+        Swal.fire({
+            title: "ยืนยันการลบ",
+            text: `คุณต้องการลบสินค้า "${productName}"ใช่หรือไม่?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ลบ",
+            cancelButtonText: "ยกเลิก",
+            confirmButtonColor: "#e74c3c",
+            cancelButtonColor: "#95a5a6"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
